@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<!-- CSS is here -->
+	<title>Web bán hàng</title>
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+	<link href="css/nav-header.css" rel="stylesheet" type="text/css">
+	<link href="css/banner-top.css" rel="stylesheet" type="text/css">
+	<link href="css/left-content.css" rel="stylesheet" type="text/css">
+	<link href="css/section.css" rel="stylesheet" type="text/css">
+	<link href="css/footer.css" rel="stylesheet" type="text/css">
+	<link href="css/product-box.css" rel="stylesheet" type="text/css">
+	<link href="css/sapxepsp.css" rel="stylesheet" type="text/css">
+	<link href="css/breadcrumb.css" rel="stylesheet" type="text/css">
+	<link href="css/gio-hang.css" rel="stylesheet" type="text/css">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+
+	<div class="">
+
+		<!-- Thanh công cụ -->
+		<div class="nav fixed-top">
+			<ul class="list-left">
+				<li><a href="/index" class="a-light logo-home">HOME</a></li>
+				<li><a href="/gioithieu">Giới thiệu</a></li>
+				<li><a href="/lienhe">Liên hệ</a></li>
+			</ul>
+			<ul class="list-right">
+				<li th:if="${userdto != null}">Hello, <span th:text="${userdto.getUsername()}"></span>!</li>
+				<li  th:if="${userdto == null}"class="dang-nhap"><a href="/dangnhap">Đăng nhập</a></li>
+				<li th:if="${userdto != null}" class="dang-nhap"><a th:href="@{/logout}">Đăng xuất</a></li>
+				<span >|</span>
+				<li th:if="${userdto == null}" class="dang-ky"><a href="/dangky">Đăng ký</a></li>
+				<li th:if="${userdto != null}"><a href="/loadcart" class="left a-light">GIỎ HÀNG</a></li>
+			</ul>
+		</div>
+		<!-- end Thanh công cụ -->
+
+
+		<!-- Phần header -->
+		<div class="header">
+			<a href="index.html"><img src="image/logo-web1.png" alt="" width="120" height="90" class="logo" />
+			</a>
+			<span class="ten-cua-hang">Anh Quan Shop</span>
+			<div class="search">
+				<form action="tim-kiem.html">
+					<input type="search" class="search-box" placeholder="Bạn cần tìm gì ?">
+					<input type="submit" formmethod="post" class="search-button" value="Search">
+				</form>
+			</div>
+		</div>
+		<!-- end Phần header -->
+
+		<!--Đường dẫn (breadcrumb)-->
+		<div class="breadcrumb">
+			<a class="truoc-do" href="index.html">Home</a>
+			<span class="hien-tai">&raquo;</span>
+			<a class="truoc-do" href="index.html">Điện thoại</a>
+			<span class="hien-tai">&raquo;</span>
+			<span class="hien-tai">Giỏ hàng</span>
+		</div>
+		<!--End đường đẫn - Breadcrumb-->
+
+		<!-- Phần thân trang container -->
+		<div class="wrap_main overflow_auto">
+			<!-- Thanh menu bên trái -->
+			<div class="menu-ben-trai">
+				<ul>
+					<li class="title">Danh Mục Sản Phẩm</li>
+					<li>
+						<button value="getdienthoai"   onclick="change_iframe(this)">
+							<img id="icon-mobile" src="image/phone_icon.png">Điện thoại
+						</button>
+					</li>
+					<li>
+						<button value="getmaytinhbang" onclick="change_iframe(this)" >
+							<img id="icon-mobile" src="image/images.png">Máy tính bảng
+						</button>
+					</li>
+					<li>
+						<button value="gettainghe"onclick="change_iframe(this)" >
+							<img id="icon-mobile" src="image/icon-headphone.jpg">Tai Nghe
+						</button>
+					</li>
+					<li>
+						<button value="getdienlanh"  onclick="change_iframe(this)">
+							<img id="icon-mobile" src="image/icon-cool.jpg">Điện lạnh
+						</button>
+					</li>
+					<li>
+						<button value="getlaptop" onclick="change_iframe(this)">
+							<img id="icon-mobile" src="image/icon-Laptop.png">Laptop
+						</button>
+					</li>
+					<li>
+						<button value="getmayanh" onclick="change_iframe(this)">
+							<img id="icon-mobile" src="image/icon-camera.png">Máy ảnh
+						</button>
+					</li>
+				</ul>
+			</div>
+			<!--End Thanh menu bên trái -->
+
+
+			<div class="khung-frame">
+				<div class="section">
+					<!--Thanh tiêu đề-->
+					<p class="section-head">GIỎ HÀNG</p>
+					<!--End Thanh tiêu đề-->
+					<div class="list_sp">
+						<div th:each="productcart : ${productcart}">
+							<div class="cart-item">
+								<div class="cart-item-left">
+									<img class="cart-img" th:src="${productcart.getHinh_anh()}">
+									<a href="thongtinsp" class="cart-heading" th:utext="${productcart.getTen()}"></a><br>
+									<p class="cart-brand"></p>
+
+								</div>
+									<div class="cart-item-right" >
+										<div th:each="cartItemList:${cartItemList}">
+											<div th:if="${cartItemList.getProduct().getId()==productcart.getId()}">
+												<div class="sss">
+
+													<form action="/giamcart" method="post">
+														<input type="hidden" name="cartItemId" th:value="${cartItemList.getId()}">
+														<button >-</button>
+													</form>
+												<input type="text" name="quantity" id="quantity" th:value="${cartItemList.getQuantity()}">
+													<form action="/tangcart" method="post">
+														<input type="hidden" name="cartItemId" th:value="${cartItemList.getId()}">
+														<button >+</button>
+													</form>
+												</div>
+												<form action="/deleteproductcart" method="post">
+													<div class="cart-btn">
+														<input type="hidden" name="cartItemId" th:value="${cartItemList.getId()}">
+														<button id="delete-cart"></button>
+														<button id="heart-cart"></button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+
+
+								<p style="font-size:20px;color:rgb(255, 99, 0);margin:0;padding-top:5px" th:utext="${#numbers.formatDecimal(productcart.getGia_moi(), 0, 'COMMA', 0, 'POINT')}+'&#8363;' "></p>
+								<p style="font-size:15px;color:rgb(124, 124, 124);margin:0;padding-top:10px;text-decoration:line-through" th:utext="${#numbers.formatDecimal(productcart.getGia_cu() 	, 0, 'COMMA', 0, 'POINT')}+'&#8363;'"></p>
+								<p style="font-size:15px;color:rgb(79, 79, 79);margin:0;padding-top:10px; "th:utext="'-'+${productcart.getSale()+'%'}"></p>
+
+
+							</div>
+						</div>
+
+					</div>
+					<div class="summary-section">
+						<div class="summary-heading">Thông tin đơn hàng:</div>
+						<div class="rows">
+							<div class="summary-label" th:utext="'Tạm tính ('+${allquantity}+' sản phẩm):'"></div>
+							<div class="summary-value" th:utext="${#numbers.formatDecimal(allprice, 0, 'COMMA', 0, 'POINT')}+'&#8363;' "></div>
+						</div>
+						<div class="rows">
+							<div class="summary-label">Phí giao hàng:</div>
+							<div class="summary-value">miễn phí</div>
+						</div>
+						<div class="ma-giam-gia rows">
+							<input type="text" name="" id="" placeholder="Nhập mã giảm giá">
+							<input type="button" value="ÁP DỤNG">
+						</div>
+						<div class="rows">
+							<div class="summary-label" >Tổng cộng:</div>
+							<div class="summary-value" style="color:#f57224;padding-bottom:10px" th:utext="${#numbers.formatDecimal(allprice, 0, 'COMMA', 0, 'POINT')}+'&#8363;' ">
+								</div>
+							<div class="summary-value" style="color:#f57224;padding-bottom:10px"><br>Đã bao gồm VAT (nếu có)</div>
+						</div>
+						<input class="xac-nhan rows" type="button" value="XÁC NHẬN GIỎ HÀNG">
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!--Phần chân trang-->
+		<div class="footer">
+		</div>
+		<!--end Phần chân trang-->
+	</div>
+	<!--end class=""-->
+
+
+
+
+	<script src="js/script.js" charset="utf-8"></script>
+</body>
+
+</html>
